@@ -22,6 +22,11 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/sign-up")
+    public String signUp() {
+        return "signUp";
+    }
+
     @GetMapping("/test")
     public String test(Principal principal, Model model) {
         System.out.println(principal.getName());
@@ -34,8 +39,5 @@ public class HomeController {
         return "test";
     }
 
-    @GetMapping("/post")
-    public String post() {
-        return "post";
-    }
+
 }
