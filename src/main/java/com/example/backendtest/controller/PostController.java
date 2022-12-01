@@ -30,7 +30,7 @@ public class PostController {
     @GetMapping("/post")
     public String post(Model model) {
 
-        List<Post> postList = postService.findAll();
+        List<Post> postList = postService.findAllWithNotDelete();
 
         model.addAttribute("postList", postList);
 

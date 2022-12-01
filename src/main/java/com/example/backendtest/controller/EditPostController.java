@@ -33,16 +33,9 @@ public class EditPostController {
         Post findPost = postService.findById(postId);
 
         if (!findPost.getWriter().equals(principal.getName())) {
-            log.info("post edit error 발생");
+            log.info("post edit 인증 실패");
             return "error";
         }
-//
-//        findPost.setPost(principal.getName(),
-//                req.getParameter("title"),
-//                req.getParameter("content"),
-//                req.getParameter("movieLink"),
-//                attachFile.getUploadFileName(),
-//                attachFile.getStoreFileName());
 
         postService.editPost(postId,
                 principal.getName(),

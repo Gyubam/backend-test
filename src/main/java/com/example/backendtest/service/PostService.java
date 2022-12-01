@@ -4,6 +4,8 @@ import com.example.backendtest.dto.PostAddDto;
 import com.example.backendtest.entity.Post;
 import com.example.backendtest.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
 
     private final PostRepository postRepository;
@@ -24,14 +27,19 @@ public class PostService {
                 dto.getContent(),
                 dto.getMovieLink(),
                 dto.getUploadFileName(),
-                dto.getStoreFileName());
+                dto.getStoreFileName(),
+                0);
 
         postRepository.save(post);
     }
 
     public List<Post> findAll(){
-
         List<Post> postList = postRepository.findAll();
+        return postList;
+    }
+
+    public List<Post> findAllWithNotDelete(){
+        List<Post> postList = postRepository.findAllWithNotDelete();
         return postList;
     }
 
@@ -57,6 +65,19 @@ public class PostService {
             Post findPost = optionalPost.get();
 
             findPost.setPost(name, title, content, movieLink, uploadFileName, storeFileName);
+        }
+
+        return;
+    }
+
+    @Transactional
+    public void deletePost(Long postId) {
+
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        if (optionalPost.isPresent()) {
+            Post findPost = optionalPost.get();
+            findPost.setDeleteYN();
+            log.info("post delete 실행, 게시글 번호={}", postId);
         }
 
         return;

@@ -125,9 +125,25 @@
           첨부파일: <a th:href="|/attach/${post.id}|" th:text="${post.getUploadFileName()}" />
       </div>
 
-      <div class="col">
+      <div class="col" style="margin:10px">
         <button style="margin:15px" class="w-100 btn" type="button" th:onclick="|location.href='/post-edit-form/${post.id}'|">수정</button>
       </div>
+      <div class="col" style="margin:10px">
+        <button style="margin:15px" class="w-100 btn" type="button" onclick="deletePost()">삭제</button>
+      </div>
+      <script type="text/javascript" th:inline="javascript">
+                        function deletePost() {
+
+                            const id = /*[[${post.id}]]*/;
+
+                            fetch("http://localhost:8080/post-delete/"+id, {
+                                method: 'post',
+                                headers: {
+                                    'X-AUTH-TOKEN': localStorage.getItem("jwt")
+                                }
+                            });
+                        }
+      </script>
 
     </div>
   </div>

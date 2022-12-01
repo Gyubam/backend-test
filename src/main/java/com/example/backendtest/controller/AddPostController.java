@@ -7,6 +7,7 @@ import com.example.backendtest.file.UploadFile;
 import com.example.backendtest.repository.PostRepository;
 import com.example.backendtest.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AddPostController {
 
     private final FileStore fileStore;
@@ -41,6 +43,7 @@ public class AddPostController {
         );
 
         postService.savePost(dto);
+        log.info("사용자={}, 게시글 작성", principal.getName());
         return dto.getWriter();
     }
 }

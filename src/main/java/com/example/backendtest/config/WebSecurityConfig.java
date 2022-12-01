@@ -31,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test/**").hasRole("USER")
                 .antMatchers("/post-add").hasRole("USER")
                 .antMatchers("/post-edit/**").hasRole("USER")
+                .antMatchers("/post-delete/**").hasRole("USER")
                 .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
