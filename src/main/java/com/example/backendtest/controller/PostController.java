@@ -1,16 +1,21 @@
 package com.example.backendtest.controller;
 
+import com.example.backendtest.dto.PostGetDto;
+import com.example.backendtest.dto.PostSearchCondition;
 import com.example.backendtest.entity.Post;
 import com.example.backendtest.file.FileStore;
 import com.example.backendtest.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.UriUtils;
@@ -22,6 +27,7 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class PostController {
 
     private final PostService postService;
@@ -30,10 +36,10 @@ public class PostController {
     @GetMapping("/post")
     public String post(Model model) {
 
-        List<Post> postList = postService.findAllWithNotDelete();
+        List<PostGetDto> postList = postService.findAllWithNotDelete();
 
         model.addAttribute("postList", postList);
-
+        model.addAttribute("PostSearchCondition", new PostSearchCondition());
         return "post";
     }
 
@@ -59,6 +65,22 @@ public class PostController {
 
         model.addAttribute("post", findPost);
         return "editPost";
+    }
+
+    @GetMapping("/search")
+    public String searchPost(@ModelAttribute("PostSearchCondition") PostSearchCondition condition,
+                             BindingResult bindingResult, Model model) {
+
+        System.out.println("getTitle = " + condition.getTitle());
+        System.out.println("getContent = " + condition.getContent());
+        List<PostGetDto> searchPost = postService.search(condition);
+        model.addAttribute("postList", searchPost);
+        for (PostGetDto dto : searchPost) {
+            System.out.println("dto = " + dto);
+        }
+        log.info("searchPost 실행");
+
+        return "post";
     }
 
     @ResponseBody

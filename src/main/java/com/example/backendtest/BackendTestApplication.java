@@ -2,9 +2,11 @@ package com.example.backendtest;
 
 import com.example.backendtest.entity.User;
 import com.example.backendtest.repository.UserRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.annotation.PostConstruct;
@@ -29,6 +31,7 @@ public class BackendTestApplication {
 //				).collect(Collectors.toList());
 //		repository.saveAll(users);
 //	}
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackendTestApplication.class, args);
