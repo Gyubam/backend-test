@@ -1,6 +1,7 @@
 package com.example.backendtest.controller;
 
 
+import com.example.backendtest.dto.Token;
 import com.example.backendtest.dto.UserJoinDto;
 import com.example.backendtest.dto.UserLoginDto;
 import com.example.backendtest.entity.User;
@@ -40,12 +41,12 @@ public class UserController {
 
     // 로그인
     @PostMapping("/login")
-    public String login(@RequestBody Map<String, String> user) {
+    public Token login(@RequestBody Map<String, String> user) {
 
         UserLoginDto dto = new UserLoginDto(user.get("email"),
                 user.get("password"));
 
-        String token = userService.login(dto);
+        Token token = userService.login(dto);
 
         return token;
 

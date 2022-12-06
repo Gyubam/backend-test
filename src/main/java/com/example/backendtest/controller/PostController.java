@@ -53,9 +53,7 @@ public class PostController {
 
         Post findPost = postService.findById(postId);
 
-
         model.addAttribute("post", findPost);
-
         return "postInfo";
     }
 
