@@ -1,6 +1,7 @@
 package com.example.backendtest.provider;
 
 import com.example.backendtest.dto.Token;
+import com.example.backendtest.entity.RefreshToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -110,12 +111,25 @@ public class JwtTokenProvider {
     }
 
     // 리프레시 토큰의 유효성 + 만료일자 확인
-    public boolean validateRefreshToken(String jwtRefreshToken) {
+    public String validateRefreshToken(RefreshToken refreshTokenObj){
+
+        // refresh 객체에서 refreshToken 추출
+        String refreshToken = refreshTokenObj.getRefreshToken();
+
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(jwtRefreshToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            return false;
+            // 검증
+            Jws<Claims> claims = Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(refreshToken);
+
+            //refresh 토큰의 만료시간이 지나지 않았을 경우, 새로운 access 토큰을 생성합니다.
+            if (!claims.getBody().getExpiration().before(new Date())) {
+                return recreationAccessToken(claims.getBody().get("sub").toString(), claims.getBody().get("roles"));
+            }
+        }catch (Exception e) {
+            //refresh 토큰이 만료되었을 경우, 로그인이 필요합니다.
+            return null;
+
         }
+
+        return null;
     }
 }

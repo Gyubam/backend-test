@@ -25,6 +25,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtService jwtService;
 
     @Transactional
     public void saveUser(UserJoinDto dto) {
@@ -48,14 +49,7 @@ public class UserService {
 
 
         Token tokenDto = jwtTokenProvider.createToken(findUser.getUsername(), findUser.getRoles());
-        RefreshToken refreshToken = RefreshToken.builder().keyEmail(tokenDto.getKey()).refreshToken(tokenDto.getRefreshToken()).build();
-        String loginUserEmail = refreshToken.getKeyEmail();
-
-        if(refreshTokenRepository.existsByKeyEmail(loginUserEmail)){
-            log.info("기존의 존재하는 refresh 토큰 삭제");
-            refreshTokenRepository.deleteByKeyEmail(loginUserEmail);
-        }
-        refreshTokenRepository.save(refreshToken);
+        jwtService.login(tokenDto);
 
         return tokenDto;
     }
