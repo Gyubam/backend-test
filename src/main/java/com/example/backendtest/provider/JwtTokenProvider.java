@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -28,11 +29,9 @@ public class JwtTokenProvider {
 
 
     // 토큰 유효시간 30분
-//    private long accessTokenValidTime = 30 * 60 * 1000L;
-    private long accessTokenValidTime = 30 * 1000L;
-    // 리프레시 토큰 유효시간 150분
-//    private long refreshTokenValidTime = 30 * 60 * 1000L * 5;
-    private long refreshTokenValidTime = 60 * 1000L;
+    private long accessTokenValidTime = Duration.ofMinutes(30).toMillis();
+    // 리프레시 토큰 유효시간 2주
+    private long refreshTokenValidTime = Duration.ofDays(14).toMillis();
 
     private final UserDetailsService userDetailsService;
 
@@ -98,7 +97,7 @@ public class JwtTokenProvider {
 
     // Request의 Header에서 token 값을 가져옵니다. "X-AUTH-TOKEN" : "TOKEN값'
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
+        return request.getHeader("accessToken");
     }
 
     // 토큰의 유효성 + 만료일자 확인
