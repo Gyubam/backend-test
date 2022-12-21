@@ -49,7 +49,7 @@ public class UserService {
 
 
         Token tokenDto = jwtTokenProvider.createToken(findUser.getUsername(), findUser.getRoles());
-        jwtService.login(tokenDto);
+        jwtService.saveRefreshToken(tokenDto);
 
         return tokenDto;
     }

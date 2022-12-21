@@ -22,7 +22,7 @@ public class JwtService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public void login(Token tokenDto){
+    public void saveRefreshToken(Token tokenDto){
 
         RefreshToken refreshToken = RefreshToken.builder().keyEmail(tokenDto.getKey()).refreshToken(tokenDto.getRefreshToken()).build();
         String loginUserEmail = refreshToken.getKeyEmail();

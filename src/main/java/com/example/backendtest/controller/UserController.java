@@ -51,4 +51,9 @@ public class UserController {
         return token;
 
     }
+
+    @PostMapping("/test")
+    public String test(){
+        return "test";
+    }
 }
