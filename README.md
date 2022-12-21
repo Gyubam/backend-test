@@ -7,7 +7,7 @@
 </br>
 
 2. Spring Security 인증 구현
-- JWT 기반 인증 처리
+- JWT 기반 인증 처리 (Access Token 및 Refresh Token 구현)
 - 회원, 비회원 구분
 - 회원 정보: 이름, 전화번호, Email, 비밀번호(일방향 해쉬함수 저장)
 
